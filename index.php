@@ -1,0 +1,2 @@
+<?php
+echo "Move along";

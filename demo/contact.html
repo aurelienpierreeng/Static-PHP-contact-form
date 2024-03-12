@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <div class="container my-4">
+
+        <h1>A contact form demo</h1>
+
+        <!-- adapt the URL to your API install -->
+        <form action="../send-email.php" method="post" id="contact-form" class="clearfix">
+
+            <noscript>Your browser does not support Javascript. This contact form requires Javascript enabled in a browser that supports it. Please use any recent version of Google Chrome, Chromium, Mozilla Firefox, Microsoft Edge, Vivaldi, Opera or Brave browser.</noscript>
+
+            <input name="utm" hidden readonly="readonly" ><!-- Filled by our JS with current URL ?utm_source param, if any -->
+            <input name="return_to" hidden readonly="readonly" ><!-- Filled by our JS with the current page URL -->
+            <input name="template" value="default" hidden readonly="readonly" ><!-- Email template to use. Match name with ./src/config.php['templates'] -->
+
+            <!-- Honeypot for bots : human users will let it empty since it's hidden from GUI.
+                 Bots will stuff it with dummy content.
+                 If not empty, the server will reject email sending requests. -->
+            <input name="address" hidden>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="name" class="form-label">Your name</label>
+                    <input name="name" type="text" class="form-control bg-body-tertiary" placeholder="John Doe" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Your email</label>
+                    <input name="email" type="email" class="form-control bg-body-tertiary" placeholder="john.doe@domain.com" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="subject" class="form-label">Subject</label>
+                <input name="subject" type="text" class="form-control bg-body-tertiary" placeholder="Short and specific subjects go a long way" required>
+            </div>
+
+            <label for="message" class="form-label">Message</label>
+            <textarea name="message" class="form-control bg-body-tertiary" placeholder="Keep it synthetic and to the point, but don't skip any relevant details." rows="8" required></textarea>
+
+            <!-- can set the following to display: hidden.
+                 Everything will be filled by our JS -->
+            <fieldset class="rounded border border-dark-subtle mt-3 p-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="os" class="form-label">OS</label>
+                        <input name="os" id="os" type="text" readonly="readonly" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="browser" class="form-label">Browser</label>
+                        <input name="browser" id="browser" type="text" readonly="readonly" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="lang" class="form-label">Language</label>
+                        <input name="lang" id="lang" type="text" readonly="readonly" class="form-control" required>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                        <label for="ip" class="form-label">Public IP</label>
+                        <input name="ip" id="ip" type="text" readonly="readonly" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="localip" class="form-label">Local IP</label>
+                        <input name="localip" id="localip" type="text" readonly="readonly" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="isp" class="form-label">ISP</label>
+                        <input name="isp" id="isp" type="text" readonly="readonly" class="form-control" required>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                        <label for="country" class="form-label">Country</label>
+                        <input name="country" id="country" type="text" readonly="readonly" class="form-control" required>
+                    </div>
+                </div>
+            </fieldset>
+            <button class="btn btn-dark mt-3 float-end" type="submit" disabled>Send</button>
+        </form>
+    </div>
+
+    <!-- adapt the URL to the script location -->
+    <script src="../js/user-agent.min.js"></script>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            validate_contact("../user-agent.php"); // adapt the URL to your API install
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
