@@ -141,17 +141,15 @@ else
         // Finalize
         $mail->send();
         echo $template['confirmation'];
+
+        // Redirect after success
+        echo "<p>You will be redirected in 10 s…</p>";
+        header("refresh:10;url=" . $_POST['return_to'] . "");
     }
     catch (Exception $e)
     {
         echo "<p>Message could not be sent. Mailer Error: {$mail->ErrorInfo}</p>";
     }
-}
-
-// redirect to previous page
-if (!empty($_POST['return_to'])) {
-    echo "<p>You will be redirected in 10 s…</p>";
-    header("refresh:10;url=" . $_POST['return_to'] . "");
 }
 ?>
 </div>
