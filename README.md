@@ -36,6 +36,24 @@ It is recommended to have SPF and DKIM configured on your domain, to maximize em
 
 ## Getting started
 
+### Basic concept
+
+An HTML contact form is actually much simpler than what people used to CMS imagine. You need an HTML form on some static HTML page:
+
+```html
+<form action="https://some-domain.com/send-email.php" method="post">
+    <input name="email">
+    <textarea name="message"></textarea>
+    <button type="submit">Send</button>
+</form>
+```
+
+When you click the "Send" button, an HTTP POST request is sent to `https://some-domain.com/send-email.php` __by your browser__, with `email` and `message` as parameters. You don't need a CMS or even AJAX calls on your actual website to handle anything dynamically, actually the tech needed to achieve that existed already in 2002.
+
+All we need is the actual `send-email.php` end-point to catch that POST request and do something with its content (namely, post it to some mailbox). This end-point doesn't need to be part of our website. It doesn't need to be hosted on the same server, or even domain, as our website.
+
+The scope of this project is to provide this end-point, self-hostable on any PHP server, so static websites only have to display the form fields.
+
 ### Install
 
 You will need Git installed on your computer. In a terminal, do:
