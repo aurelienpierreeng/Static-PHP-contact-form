@@ -227,8 +227,32 @@ The databases mapping IP to geographic location have an expiration date because 
 To do so, you only have to hit `https://your-domain.com/backend/update-geoip.php?key=abcdefghijkl` with `key` set as your `CONFIG` `admin-secret` value. You can do so from a web browser, manually, or you can simply set up a weekly Cron job with:
 
 ```bash
-wget /path/to/backend/update-geoip.php?key=abcdefghijkl
+wget --delete-after https://your-domain.com/backend/update-geoip.php?key=abcdefghijkl > /dev/null
 ```
+
+## Deeper Hugo integration
+
+In your `config.toml` or `hugo.toml` file, define:
+
+```toml
+[Params]
+  contact = "/contact"
+```
+
+Then you can create links to your contact page using the `?utm_source` parameter to keep track of the source page, using the Hugo template tag `{{ .Permalink }}` to define the URL to contact page, like so:
+
+```html
+<a title="Contact" href="{{ with .Site.GetPage .Site.Params.contact }}{{ .Permalink }}{{ end }}?utm_source={{ (replaceRE "https?://" "" .Permalink) }}">
+```
+
+If you click on the contact link from the page `your-domain.com/portfolio`, you would then produce the URL:
+
+```
+https://your-domain.com/portfolio.com/contact/?utm_source=your-domain.com/portfolio
+```
+
+The `utm_source` parameter is read by our `./js/user-agent.js` script and added to the hidden form field `utm`. In your email PHP templates, you can reuse it as `$_POST['utm']`. Aside from tracking purposes, it can give some context to understand the content of some cryptic emails if you know where the person comes from.
+
 
 ## Security, validation and spam
 
