@@ -1,6 +1,11 @@
 <?php
 
 return array(
+    // PHPMailer front-end debug option. Set to 0 to disable, 1 for debug output, 2 for verbose debug output.
+    // This exposes sensitive information on the front-end PHP page.
+    // DO NOT LEAVE IT ENABLED (> 0) ON A PRODUCTION SERVER
+    'debug' => 0,
+
     // A password-like random string to validate queries between user-agent.php and send.php.
     // Generate one with https://www.avast.com/random-password-generator#pc
     'user-secret' => 'xxxxxxxxxxxxxxxx',

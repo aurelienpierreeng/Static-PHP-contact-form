@@ -68,7 +68,9 @@ if (empty($_POST['browser']) || $_POST['browser'] != getBrowser())
 if (empty($_POST['lang']) || $_POST['lang'] != get_lang())
     $errors[] = 'Lang is invalid';
 
-if (empty($_POST['return_to']) || $_POST['return_to'] != $_SERVER['HTTP_REFERER'])
+if (empty($_POST['return_to']) ||
+    strtok($_POST['return_to'], '#')[0] != strtok($_SERVER['HTTP_REFERER'], '#')[0])
+    // Remove anchors from return_to before comparing to HTTP_REFERER
     $errors[] = 'Origin is invalid';
 
 if (empty($_POST['localip']))
@@ -99,21 +101,21 @@ else
         $mail->setLanguage($template['lang']);
 
         // Server settings
-        $mail->SMTPDebug = 0;                                       //Enable verbose debug output : set to 1 or 2
-        $mail->isSMTP();                                            //Send using SMTP
-        $mail->Host       = $config['mailer']['host'];              //Set the SMTP server to send through
-        $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-        $mail->Username   = $config['mailer']['username'];          //SMTP username
-        $mail->Password   = $config['mailer']['password'];          //SMTP password
-        $mail->SMTPSecure = 'tls';                                  //Enable implicit TLS encryption
-        $mail->Port       = $config['mailer']['port'];              //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+        $mail->SMTPDebug = $config['debug'];                    // Enable verbose debug output : set to 1 or 2
+        $mail->isSMTP();                                        // Send using SMTP
+        $mail->Host       = $config['mailer']['host'];          // Set the SMTP server to send through
+        $mail->SMTPAuth   = true;                               // Enable SMTP authentication
+        $mail->Username   = $config['mailer']['username'];      // SMTP username
+        $mail->Password   = $config['mailer']['password'];      // SMTP password
+        $mail->SMTPSecure = 'tls';                              // Enable implicit TLS encryption
+        $mail->Port       = $config['mailer']['port'];          // TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
         $mail->CharSet    = "UTF-8";
         $mail->SMTPAutoTLS = true;
 
         // Recipients
-        $mail->setFrom($mail->Username, $_POST['name']);            // "From" address needs to be on the DKIM sending domain for authentication.
-        $mail->addReplyTo($_POST['email'], $_POST['name']);         // Reply to the actual sender's address.
-        $mail->addCC($_POST['email'], $_POST['name']);              // Send a copy of the email to the sender, for achival purposes.
+        $mail->setFrom($mail->Username, $_POST['name']);        // "From" address needs to be on the DKIM sending domain for authentication.
+        $mail->addReplyTo($_POST['email'], $_POST['name']);     // Reply to the actual sender's address.
+        $mail->addCC($_POST['email'], $_POST['name']);          // Send a copy of the email to the sender, for achival purposes.
 
         // Add the actual receipient(s) of the email
         foreach ($template['receipients'] as $name => $addr)
@@ -121,12 +123,12 @@ else
 
         // $mail->addBCC('bcc@example.com');
 
-        $mail->Sender        = $mail->Username;                     // Address that will collect bounces
+        $mail->Sender        = $mail->Username;                 // Address that will collect bounces
         $mail->DKIM_domain   = $mail->Host;
         $mail->DKIM_identity = $mail->Username;
 
         // Attachments
-        //$mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
+        //$mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
         //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
 
         // Content
