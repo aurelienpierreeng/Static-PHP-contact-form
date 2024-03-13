@@ -5,7 +5,6 @@
 
 $config = include('./src/config.php');
 require_once("./src/utils.php");
-require_once("./src/mail-templates.php");
 
 require 'libs/PHPMailer/src/Exception.php';
 require 'libs/PHPMailer/src/PHPMailer.php';
@@ -75,8 +74,14 @@ if (empty($_POST['return_to']) || $_POST['return_to'] != $_SERVER['HTTP_REFERER'
 if (empty($_POST['localip']))
     $errors[] = 'Local IP is invalid';
 
-if (empty($_POST['template']) || !isset($config['templates'][$_POST['template']]))
-    $errors[] = 'Template is invalid';
+if (empty($_POST['template']))
+    $errors[] = 'Email template is not set';
+
+if (!isset($config['templates'][$_POST['template']]))
+    $errors[] = 'Email template is not configured';
+
+if(!file_exists('./templates/' . $_POST['template'] . '.php'))
+    $errors[] = 'Email template does not exist';
 
 if (!empty($errors))
 {
@@ -122,18 +127,17 @@ else
 
         // Attachments
         //$mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
-        //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
+        //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
 
         // Content
-        $mail->isHTML(false);
         $mail->Subject = $template['subject_prepend'] . $_POST['subject'];
 
-        // Fetch the proper template function
-        $mail->Body    = ($_POST['template'].'_template')($mail, $config);
-        // $mail->AltBody = $message;
+        // Fetch the proper template function. We checked for its validity above.
+        require_once('./templates/' . $_POST['template'] . '.php');
+        $mail->Body = email_body($mail, $config);
 
+        // Finalize
         $mail->send();
-
         echo $template['confirmation'];
     }
     catch (Exception $e)
@@ -144,8 +148,8 @@ else
 
 // redirect to previous page
 if (!empty($_POST['return_to'])) {
-    echo "<p>You will be redirected to {$_POST['return_to']} in 8 s…</p>";
-    header("refresh:8;url=" . $_POST['return_to'] . "");
+    echo "<p>You will be redirected in 10 s…</p>";
+    header("refresh:10;url=" . $_POST['return_to'] . "");
 }
 ?>
 </div>

@@ -57,7 +57,7 @@ return array(
     // Emails template settings
     'templates' => array(
 
-        // Config for the default template, matching `default_template()` from ./src/mail-templates.php
+        // Config for the default template, matching `default.php` from ./templates
         'default' => array(
             // List of people who will get contact form emails, as name => address
             'receipients' => array(
@@ -76,7 +76,7 @@ return array(
             'confirmation' => "<p>Success, message sent !</p><p>You should get a copy of the email in a few minutes in your own mailbox. If you don't, it means this server is blocked by your email provider. Try again with a different email.</p>",
         ),
 
-        // Optional: create your own template: write a new `custom_template()` function in ./src/mail-templates.php,
+        // Optional: create your own template: write a new `custom.php` file in ./templates.php,
         // then send a POST request to ./send-email.php?template=custom using an hidden <input name="template" value="custom">
         // tag in your HTML form.
         'custom' => array(
@@ -88,4 +88,7 @@ return array(
 
         // can add as many templates as you like
     ),
+
+    // Note: this array is passed as the `$config` parameter to email templates.
+    // You can add any custom key here that you need to access from templates.
 );
