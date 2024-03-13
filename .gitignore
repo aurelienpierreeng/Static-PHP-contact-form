@@ -1,3 +1,6 @@
 src/config.php
 libs/geoip/*.phar
 libs/geoip/*.mmdb
+templates/*.php
+!templates/default.php
+!templates/html.php
