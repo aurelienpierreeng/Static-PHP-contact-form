@@ -136,7 +136,6 @@ if (RTCPeerConnection) {
       }
     }
     if (addrs[0]) {
-      console.log(browser.dns);
       if (DNSResolver) {
         let resolving = DNSResolver.resolve("https://" + addrs[0], [
           "bypass_cache",
@@ -148,15 +147,6 @@ if (RTCPeerConnection) {
     }
   }
 }
-
-/* The following is not yes supported in browsers
-
-  let resolving = browser.dns.resolve("https://" + newAddr, [
-    "bypass_cache",
-    "canonical_name",
-  ]);
-  resolving.then(resolved);
-*/
 
 async function get_local_ip() {
   return new Promise(function(resolve, reject) {
@@ -184,5 +174,5 @@ async function validate_contact(url) {
 
   local_ip.then(ip => { document.getElementById("localip").value = ip; });
 
-  document.querySelector('button[type="submit"]').disabled = false;
+  document.getElementById("contact-send").disabled = false;
 }
