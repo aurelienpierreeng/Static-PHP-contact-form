@@ -73,8 +73,10 @@ if (empty($_POST['return_to']) ||
     // Remove anchors from return_to before comparing to HTTP_REFERER
     $errors[] = 'Origin is invalid';
 
+/* Not supported by some browsers - needs investigation
 if (empty($_POST['localip']))
     $errors[] = 'Local IP is invalid';
+*/
 
 if (empty($_POST['template']))
     $errors[] = 'Email template is not set';
